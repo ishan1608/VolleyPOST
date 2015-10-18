@@ -1,8 +1,8 @@
 package com.ishan1608.volleypost;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -16,15 +16,19 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     TextView statusMessage;
+    ProgressDialog connectionDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        connectionDialog = new ProgressDialog(MainActivity.this);
+        connectionDialog.setMessage("Talking to server");
+        connectionDialog.show();
 
         statusMessage = (TextView) findViewById(R.id.status_message);
 
-        String testUrl = "https://dartserve.herokuapp.com/";
+        String testUrl = "https://dartserve.herokuapp.com/test";
         StringRequest testUrlRequest = new StringRequest(Request.Method.POST, testUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -41,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 Map<String, String> params = new HashMap<>();
                 // the POST parameters:
-                params.put("greeting", "Ola Server");
+                params.put("greeting", "Ola");
                 return params;
             }
         };
@@ -49,5 +53,6 @@ public class MainActivity extends AppCompatActivity {
     }
     private void displayStatus(String status) {
         statusMessage.setText(status);
+        connectionDialog.dismiss();
     }
 }
